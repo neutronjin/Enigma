@@ -1,0 +1,6 @@
+{
+  "name": "ENIGMA — Technical Club",
+  "description": "Official website for ENIGMA Technical Club. Unraveling technology, innovation, and creativity through student-led wings, hackathons, and peer learning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

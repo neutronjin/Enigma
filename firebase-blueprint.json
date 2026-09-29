@@ -1,0 +1,181 @@
+{
+  "entities": {
+    "MemberApplication": {
+      "title": "MemberApplication",
+      "description": "Student application to join the ENIGMA Technical Club.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the application record."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Full name of the student.",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "College or personal email address.",
+          "format": "email",
+          "maxLength": 150
+        },
+        "usn": {
+          "type": "string",
+          "description": "University seat number or student roll identifier.",
+          "minLength": 3,
+          "maxLength": 30
+        },
+        "branch": {
+          "type": "string",
+          "description": "Academic branch or engineering department.",
+          "maxLength": 80
+        },
+        "year": {
+          "type": "string",
+          "description": "Academic year of study.",
+          "enum": ["1st Year", "2nd Year", "3rd Year", "4th Year"]
+        },
+        "domain": {
+          "type": "string",
+          "description": "Selected technical wing or domain of interest.",
+          "maxLength": 60
+        },
+        "portfolio": {
+          "type": "string",
+          "description": "GitHub, LinkedIn, or portfolio URL.",
+          "maxLength": 255
+        },
+        "reason": {
+          "type": "string",
+          "description": "Statement of purpose or reason for joining.",
+          "maxLength": 2000
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the application.",
+          "enum": ["pending", "reviewed", "accepted", "waitlisted"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO 8601 timestamp of response submission."
+        }
+      },
+      "required": ["fullName", "email", "usn", "branch", "year", "domain", "status", "createdAt"]
+    },
+    "EventRegistration": {
+      "title": "EventRegistration",
+      "description": "Student RSVP registration for club workshops and flagship events.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the registration record."
+        },
+        "eventId": {
+          "type": "string",
+          "description": "Identifier of the event being registered for."
+        },
+        "eventTitle": {
+          "type": "string",
+          "description": "Title of the registered event.",
+          "maxLength": 200
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the attendee.",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the attendee.",
+          "format": "email",
+          "maxLength": 150
+        },
+        "usn": {
+          "type": "string",
+          "description": "USN of the attendee.",
+          "minLength": 3,
+          "maxLength": 30
+        },
+        "year": {
+          "type": "string",
+          "description": "Academic year of the attendee.",
+          "enum": ["1st Year", "2nd Year", "3rd Year", "4th Year"]
+        },
+        "status": {
+          "type": "string",
+          "description": "Registration confirmation status.",
+          "enum": ["confirmed", "waitlist", "cancelled"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO 8601 timestamp of registration."
+        }
+      },
+      "required": ["eventId", "eventTitle", "name", "email", "usn", "year", "status", "createdAt"]
+    },
+    "FeedbackSubmission": {
+      "title": "FeedbackSubmission",
+      "description": "Feedback, workshop suggestions, or general inquiries submitted by users.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the feedback record."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the submitting student.",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the submitting student.",
+          "maxLength": 150
+        },
+        "feedbackType": {
+          "type": "string",
+          "description": "Feedback categorization.",
+          "enum": ["workshop", "event", "club_improvement", "general"]
+        },
+        "rating": {
+          "type": "number",
+          "description": "Numerical rating from 1 to 5."
+        },
+        "message": {
+          "type": "string",
+          "description": "User message or suggestion text.",
+          "minLength": 2,
+          "maxLength": 2000
+        },
+        "status": {
+          "type": "string",
+          "description": "Triage status.",
+          "enum": ["new", "reviewed", "resolved"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO 8601 timestamp of feedback submission."
+        }
+      },
+      "required": ["feedbackType", "rating", "message", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/responses_applications/{applicationId}": {
+      "schema": "MemberApplication",
+      "description": "Stores club membership application responses."
+    },
+    "/responses_event_registrations/{registrationId}": {
+      "schema": "EventRegistration",
+      "description": "Stores event registration and RSVP responses."
+    },
+    "/responses_feedback/{feedbackId}": {
+      "schema": "FeedbackSubmission",
+      "description": "Stores user feedback, workshop ideas, and reviews."
+    }
+  }
+}

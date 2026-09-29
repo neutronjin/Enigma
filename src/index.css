@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-enigma: "Syne", "Cinzel Decorative", "Cinzel", "Space Grotesk", sans-serif;
+  --font-tagline: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --font-motto: "Cormorant Garamond", "Source Serif 4", "Playfair Display", Georgia, serif;
+  --font-display: "Bricolage Grotesque", "Space Grotesk", sans-serif;
+  --font-mono: "Space Grotesk", monospace;
+  --font-sans: "Plus Jakarta Sans", "Noto Sans Kannada", "Noto Sans Devanagari", system-ui, sans-serif;
+  --font-kannada: "Noto Sans Kannada", "Plus Jakarta Sans", sans-serif;
+  --font-hindi: "Noto Sans Devanagari", "Plus Jakarta Sans", sans-serif;
+}
+
+.font-enigma {
+  font-family: var(--font-enigma);
+}
+
+.font-tagline {
+  font-family: var(--font-tagline);
+}
+
+.font-motto {
+  font-family: var(--font-motto);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Eye-comfort soft focus & accessibility outline */
+:focus-visible {
+  outline: 2px solid #ea580c;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

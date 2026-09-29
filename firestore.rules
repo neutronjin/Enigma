@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidEmail(email) {
+      return email is string && email.matches('^[^@]+@[^@]+\\.[^@]+$') && email.size() <= 150;
+    }
+
+    function isValidApplication(data) {
+      return data.keys().hasAll(['fullName', 'email', 'usn', 'branch', 'year', 'domain', 'status', 'createdAt'])
+        && data.keys().hasOnly(['id', 'fullName', 'email', 'usn', 'branch', 'year', 'domain', 'portfolio', 'reason', 'status', 'createdAt'])
+        && data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 100
+        && isValidEmail(data.email)
+        && data.usn is string && data.usn.size() >= 3 && data.usn.size() <= 30
+        && data.branch is string && data.branch.size() <= 80
+        && data.year in ['1st Year', '2nd Year', '3rd Year', '4th Year']
+        && data.domain is string && data.domain.size() <= 60
+        && data.status in ['pending', 'reviewed', 'accepted', 'waitlisted']
+        && data.createdAt is string;
+    }
+
+    function isValidRegistration(data) {
+      return data.keys().hasAll(['eventId', 'eventTitle', 'name', 'email', 'usn', 'year', 'status', 'createdAt'])
+        && data.keys().hasOnly(['id', 'eventId', 'eventTitle', 'name', 'email', 'usn', 'year', 'status', 'createdAt'])
+        && data.eventId is string && data.eventId.size() <= 50
+        && data.eventTitle is string && data.eventTitle.size() <= 200
+        && data.name is string && data.name.size() >= 2 && data.name.size() <= 100
+        && isValidEmail(data.email)
+        && data.usn is string && data.usn.size() >= 3 && data.usn.size() <= 30
+        && data.year in ['1st Year', '2nd Year', '3rd Year', '4th Year']
+        && data.status in ['confirmed', 'waitlist', 'cancelled']
+        && data.createdAt is string;
+    }
+
+    function isValidFeedback(data) {
+      return data.keys().hasAll(['feedbackType', 'rating', 'message', 'status', 'createdAt'])
+        && data.keys().hasOnly(['id', 'name', 'email', 'feedbackType', 'rating', 'message', 'status', 'createdAt'])
+        && data.feedbackType in ['workshop', 'event', 'club_improvement', 'general']
+        && data.rating is number && data.rating >= 1 && data.rating <= 5
+        && data.message is string && data.message.size() >= 2 && data.message.size() <= 2000
+        && data.status in ['new', 'reviewed', 'resolved']
+        && data.createdAt is string;
+    }
+
+    // Health check connectivity doc
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Membership Applications
+    match /responses_applications/{applicationId} {
+      allow create: if isValidApplication(request.resource.data);
+      allow read: if true;
+      allow update, delete: if false;
+    }
+
+    // Event Registrations
+    match /responses_event_registrations/{registrationId} {
+      allow create: if isValidRegistration(request.resource.data);
+      allow read: if true;
+      allow update, delete: if false;
+    }
+
+    // Feedback Submissions
+    match /responses_feedback/{feedbackId} {
+      allow create: if isValidFeedback(request.resource.data);
+      allow read: if true;
+      allow update, delete: if false;
+    }
+  }
+}
